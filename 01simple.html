@@ -1,0 +1,57 @@
+<html>
+	<head>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/p5.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/addons/p5.dom.js"></script>
+		<script src="p5.speech.js"></script>
+		<script>
+			var words = [
+				"I don't know you",
+				"I'm fine",
+				"I'm being OK",
+				'Life is beautiful',
+				'Hi boss',
+				'Leave me alone',
+				'I just want your approval',
+				'I want to meet your parents',
+				'I love you',
+				'I just want your money',
+				'I can offer you a job',
+			];
+			var iptr = 0; // a counter for the words
+			let screenText = 'Sample Text';
+			var myVoice = new p5.Speech(); // new P5.Speech object
+
+			function setup() {
+				// graphics stuff:
+
+				// say hello:
+				myVoice.speak('testing one two three!!!');
+				myButt = createButton('Click me');
+				myButt.mouseClicked(audioMeme);
+			}
+
+			function draw() {
+				clear();
+				createCanvas(400, 400);
+				background(255, 0, 0);
+				fill(255, 255, 255, 100);
+				textSize(30);
+				fill(255);
+				text(screenText, 0, height / 2);
+			}
+
+			function doList() {
+				myVoice.listVoices(); // debug printer for voice options
+			}
+
+			function audioMeme() {
+				myVoice.setVoice('Ting-Ting');
+				iptr = floor(random(words.length));
+				screenText = words[iptr];
+				myVoice.speak(screenText);
+				console.log(myVoice.listVoices());
+			}
+		</script>
+	</head>
+	<body></body>
+</html>
