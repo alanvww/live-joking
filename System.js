@@ -260,15 +260,15 @@ class character {
 		this.show();
 		this.voice.setVoice(11);
 		this.emo;
+		this.serious = true;
 
-		// the eyePosition will not change
-		//this.leftEyePos = width/4-100;
-		//this.rightEyePos = height/4+80;
+		setInterval(() => this.seriousOrNot(), 1000);
 	}
 
 	show() {
 		notification.play();
 		cav = createCanvas(1000, 750);
+		let eyesChange = floor(random(4));
 		r = random(255);
 		g = random(255);
 		b = random(255);
@@ -290,15 +290,30 @@ class character {
 		// behavior
 		textStyle(ITALIC);
 		textAlign(CENTER);
-		textSize();
+		textSize(30);
 		this.coloring('fill');
 		text(this.behavior, (3 * width) / 4, (3 * height) / 4);
 
 		//emotion
 		this.coloring('fill');
+		this.coloring('stroke');
 		noStroke();
-		ellipse(width / 4 - 100, height / 4 + 80, 50, 50);
-		ellipse(width / 4 + 100, height / 4 + 80, 50, 50);
+		if (eyesChange == 1) {
+			ellipse(width / 4 - 100, height / 4 + 80, 50, 50);
+			ellipse(width / 4 + 100, height / 4 + 80, 50, 50);
+		} else if (eyesChange == 2) {
+			ellipse(width / 4 + 100, height / 4 + 80, 50, 50);
+			textSize(120);
+			text('>', width / 4 - 100, height / 4 + 100);
+		} else if (eyesChange == 3) {
+			textSize(120);
+			ellipse(width / 4 - 100, height / 4 + 80, 50, 50);
+			text('<', width / 4 + 100, height / 4 + 100);
+		} else {
+			textSize(120);
+			text('>', width / 4 - 100, height / 4 + 100);
+			text('<', width / 4 + 100, height / 4 + 100);
+		}
 
 		if (!this.emo) this.happy();
 		else this.emo();
@@ -319,12 +334,10 @@ class character {
 	}
 
 	// Voice selector
-	female() {
-		this.voice.setVoice(6);
-	}
-
-	male() {
-		this.voice.setVoice(11);
+	pronouns(gender) {
+		if (gender == 'she' || gender == 'her') {
+			this.voice.setVoice(6);
+		} else this.voice.setVoice(11);
 	}
 
 	// Speak up
@@ -338,12 +351,20 @@ class character {
 		clear();
 		this.show();
 		this.sayItLoud();
+		return this.monologue;
 	}
 
 	do(behavior = rBehavior()) {
 		this.behavior = behavior;
 		clear();
 		this.show();
+		return behavior;
+	}
+
+	seriousOrNot() {
+		if (!this.serious) {
+			this.hysteria();
+		}
 	}
 
 	hysteria() {
@@ -362,7 +383,7 @@ class character {
 
 	// Emos
 	moderate() {
-		this.emo = this.moderate;
+		this.emo = this.moderateFace;
 		clear();
 		this.show();
 	}
